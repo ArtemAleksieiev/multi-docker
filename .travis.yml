@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t artemskih/multi-docker-f ./client/Dockerfile.dev ./client
+  - docker build -t artemskih/multi-docker -f ./client/Dockerfile.dev ./client
 
 
 script:
