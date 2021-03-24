@@ -1,0 +1,25 @@
+language: generic 
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t artemskih/multi-docker-f ./client/Dockerfile.dev ./client
+
+
+script:
+  - docker run -e CI=true artemskih/multi-docker npm run test
+
+after_success:
+  - docker build -t artemskih/multi-client ./client
+  - docker build -t artemskih/multi-nginx ./nginx
+  - docker build -t artemskih/multi-server ./server
+  - docker build -t artemskih/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push artemskih/multi-client
+  - docker push artemskih/multi-nginx
+  - docker push artemskih/multi-server
+  - docker push artemskih/multi-worker
+
+
